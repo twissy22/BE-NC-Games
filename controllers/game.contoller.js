@@ -9,3 +9,5 @@ exports.getCategories = (req, res, next) => {
         next(err);
       });
 }
+
+// exports.getReviews
