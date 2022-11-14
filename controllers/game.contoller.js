@@ -10,4 +10,3 @@ exports.getCategories = (req, res, next) => {
       });
 }
 
-// exports.getReviews

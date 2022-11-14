@@ -37,24 +37,3 @@ describe("/api/categories", () => {
 })
 });
 
-// describe("/api/reviews", () => {
-//   test("GET 200: gets an array of review objects", () => {
-//     return request(app)
-//       .get("/api/reviews")
-//       .expect(200)
-//       .then(({ body }) => {
-//         expect(body.review.length).toBeGreaterThan(0);
-//         body.review.forEach((review) => {
-//           expect(review).toMatchObject({
-//             description: expect.any(String),
-//             category: expect.any(String),
-//             review_img_url: expect.any(String),
-//             created_at: expect.any(Date),
-//             votes: expect.any(Number),
-//             designer: expect.any(Number),
-//             comment_count: expect.any(Number)
-//           });
-//         });
-//       });
-//   });
-// });

@@ -5,7 +5,7 @@ const { getCategories, getReview } = require("./controllers/game.contoller.js")
 
 
 app.get("/api/categories", getCategories);
-// app.get("/api/reviews", getReview);
+
 
 app.all("/*", (req, res, next)=>{
   res.status(404).send({msg: "path not found"});
