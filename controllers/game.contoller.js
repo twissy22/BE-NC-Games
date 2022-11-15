@@ -1,4 +1,4 @@
-const { selectCategories } = require("../models/game.model");
+const { selectCategories, selectReviews } = require("../models/game.model");
 
 exports.getCategories = (req, res, next) => {
     selectCategories()
@@ -9,4 +9,12 @@ exports.getCategories = (req, res, next) => {
         next(err);
       });
 }
-
+exports.getReviews = (req, res, next) => {
+    selectReviews()
+    .then((reviews) => {
+        res.status(200).send({ reviews });
+      })
+      .catch((err) => {
+        next(err);
+      });
+}

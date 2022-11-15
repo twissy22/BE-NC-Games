@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const { getCategories, getReview } = require("./controllers/game.contoller.js")
+const { getCategories, getReviews } = require("./controllers/game.contoller.js")
 
 
 app.get("/api/categories", getCategories);
