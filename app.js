@@ -1,12 +1,13 @@
 const express = require("express");
 const app = express();
 
-const { getCategories, getReviews, getReviewById } = require("./controllers/game.contoller.js")
+const { getCategories, getReviews, getReviewById, getCommentsById } = require("./controllers/game.contoller.js")
 
 
 app.get("/api/categories", getCategories);
 app.get("/api/reviews",getReviews)
 app.get("/api/reviews/:id",getReviewById)
+app.get("/api/reviews/:id/comments",getCommentsById)
 app.use((err, req, res, next) => {
   if (err.code === "22P02") res.status(400).send({ msg: "bad request!" });
   else {

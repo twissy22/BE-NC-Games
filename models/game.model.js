@@ -1,4 +1,5 @@
 const db = require("../db/connection.js");
+const {checkreviewID} = require("../db/seeds/utils")
 
 exports.selectCategories = ()=> {
     return db
@@ -43,4 +44,20 @@ exports.selectReview = (id)=> {
     }
     return result.rows;
   });
+};
+
+exports.selectComments = (id)=> {
+  return checkreviewID(id).then(()=>{
+  return db
+  .query(`
+  SELECT comment_id, votes, created_at, body, comments.review_id, users.username AS author 
+  FROM comments 
+  JOIN users ON users.username = comments.author
+  WHERE comments.review_id =$1;
+  `,[id])
+  .then((result) => {
+
+    return result.rows;
+  });
+})
 };
