@@ -1,14 +1,15 @@
 const express = require("express");
 const app = express();
 
-const { getCategories } = require("./controllers/game.contoller.js")
+const { getCategories, getReviews } = require("./controllers/game.contoller.js")
 
 
 app.get("/api/categories", getCategories);
+app.get("/api/reviews", getReviews);
 
 
-app.use((err, req, res, next) => {
-  res.status(err.status).send({ msg: err.msg });
-});
+app.all("/*", (req, res, next)=>{
+  res.status(404).send({msg: "path not found"});
+})
 
 module.exports = app;
