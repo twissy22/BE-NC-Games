@@ -27,3 +27,20 @@ exports.selectReviews = ()=> {
       return result.rows;
     });
 };
+exports.selectReview = (id)=> {
+  return db
+  .query(
+    `SELECT review_id, title,review_body,designer,review_img_url, votes, created_at, categories.slug AS category, users.username AS owner
+    FROM reviews 
+    JOIN Categories ON categories.slug = reviews.category
+    JOIN users ON users.username = reviews.owner
+    WHERE review_id =$1;
+    `, [id]
+  )
+  .then((result) => {
+    if(result.rows.length ===0){
+     return Promise.reject({status: 404, msg: "no review matching that id"})
+    }
+    return result.rows;
+  });
+};
