@@ -64,6 +64,7 @@ describe("/api/reviews", () => {
       .get("/api/reviews")
       .expect(200)
       .then(({ body }) => {
+        console.log(body.reviews)
         expect(body.reviews).toBeSortedBy("created_at",{descending:true});
       })
     })
@@ -125,6 +126,16 @@ describe("/api/reviews/:review_id/comments", () => {
       .then(({ body }) => {
         expect(body.comments.length).toBeGreaterThan(0);
         expect(body.comments[0].review_id).toBe(2)
+        expect(body.comments).toBeSortedBy("created_at",{descending:true});
+        body.comments.forEach((comment) => {
+          expect(comment).toMatchObject({
+            author: expect.any(String),
+            body: expect.any(String),
+            votes: expect.any(Number),
+            comment_id: expect.any(Number),
+            created_at: expect.any(String)
+          })
+        })
       });
   });
   test("GET 200: gets an blank array if comments for review_id", () => {

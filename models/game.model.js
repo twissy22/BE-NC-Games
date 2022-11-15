@@ -53,10 +53,9 @@ exports.selectComments = (id)=> {
   SELECT comment_id, votes, created_at, body, comments.review_id, users.username AS author 
   FROM comments 
   JOIN users ON users.username = comments.author
-  WHERE comments.review_id =$1;
+  WHERE comments.review_id =$1 ORDER BY created_at DESC;
   `,[id])
   .then((result) => {
-
     return result.rows;
   });
 })
