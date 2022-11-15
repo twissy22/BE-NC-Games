@@ -36,6 +36,7 @@ describe("/api/categories", () => {
   })
 })
 });
+
 describe("/api/reviews", () => {
   test("GET 200: gets an array of review objects", () => {
     return request(app)
