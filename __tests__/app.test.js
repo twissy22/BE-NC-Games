@@ -117,3 +117,50 @@ describe("/api/reviews/:id", () => {
         });
 });
 
+describe("/api/reviews/:review_id/comments", () => {
+  test("GET 200: gets an array of comments for review_id", () => {
+    return request(app)
+      .get("/api/reviews/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments.length).toBeGreaterThan(0);
+        expect(body.comments).toBeSortedBy("created_at",{descending:true});
+        body.comments.forEach((comment, index) => {
+          expect(body.comments[index].review_id).toBe(2)
+          expect(comment).toMatchObject({
+            author: expect.any(String),
+            body: expect.any(String),
+            votes: expect.any(Number),
+            comment_id: expect.any(Number),
+            created_at: expect.any(String)
+          })
+        })
+      });
+  });
+  test("GET 200: gets an blank array if no comments for review_id", () => {
+    return request(app)
+      .get("/api/reviews/4/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toEqual([])
+      });
+    })
+  test("GET 400: wrong data for id", () => {
+    return request(app)
+      .get("/api/reviews/daag/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request!");
+      });
+  
+      });
+  test("GET 404: error when id does not exist", () => {
+    return request(app)
+      .get("/api/reviews/1900888/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("no reviewer matching that id");
+      });
+  
+      });
+ })
