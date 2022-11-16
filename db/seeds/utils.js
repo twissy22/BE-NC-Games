@@ -29,7 +29,7 @@ return db
 )
 .then((result)=>{
 	if(result.rows.length ===0){
-		return Promise.reject({status: 404, msg: "no reviewer matching that id"})
+		return Promise.reject({status: 404, msg: "no review matching that id"})
 	   }
 })
 }

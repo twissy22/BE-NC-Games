@@ -82,3 +82,22 @@ exports.insertComment = (id, body)=> {
 })
   })
 };
+
+exports.updateVotes = (id, body)=> {
+  return checkreviewID(id).then(()=>{
+    let queryStr =
+    "UPDATE reviews SET votes = votes + $1 WHERE review_id = $2  RETURNING *;";
+    const review_id = id
+    console.log(body.inc_vote)
+  const queryVals = [
+    body.inc_vote, review_id]
+    if (queryVals.includes(undefined)) {
+      return Promise.reject({ status: 400, msg: "Insufficient data" });
+    }
+    return db.query(queryStr, queryVals)
+.then((result) => { 
+    return result.rows;
+   
+  });
+})
+};
