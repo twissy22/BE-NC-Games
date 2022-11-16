@@ -127,7 +127,8 @@ describe("/api/reviews/:review_id/comments", () => {
         expect(body.comments.length).toBeGreaterThan(0);
         expect(body.comments[0].review_id).toBe(2)
         expect(body.comments).toBeSortedBy("created_at",{descending:true});
-        body.comments.forEach((comment) => {
+        body.comments.forEach((comment, index) => {
+          expect(body.comments[index].review_id).toBe(2)
           expect(comment).toMatchObject({
             author: expect.any(String),
             body: expect.any(String),
@@ -138,7 +139,7 @@ describe("/api/reviews/:review_id/comments", () => {
         })
       });
   });
-  test("GET 200: gets an blank array if comments for review_id", () => {
+  test("GET 200: gets an blank array if no comments for review_id", () => {
     return request(app)
       .get("/api/reviews/4/comments")
       .expect(200)
