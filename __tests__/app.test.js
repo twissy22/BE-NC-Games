@@ -64,7 +64,6 @@ describe("/api/reviews", () => {
       .get("/api/reviews")
       .expect(200)
       .then(({ body }) => {
-        console.log(body.reviews)
         expect(body.reviews).toBeSortedBy("created_at",{descending:true});
       })
     })
@@ -125,7 +124,6 @@ describe("/api/reviews/:review_id/comments", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.comments.length).toBeGreaterThan(0);
-        expect(body.comments[0].review_id).toBe(2)
         expect(body.comments).toBeSortedBy("created_at",{descending:true});
         body.comments.forEach((comment, index) => {
           expect(body.comments[index].review_id).toBe(2)
