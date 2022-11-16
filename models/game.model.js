@@ -1,5 +1,5 @@
 const db = require("../db/connection.js");
-const {checkreviewID} = require("../db/seeds/utils")
+const {checkreviewID, checkUser} = require("../db/seeds/utils")
 
 exports.selectCategories = ()=> {
     return db
@@ -59,4 +59,26 @@ exports.selectComments = (id)=> {
     return result.rows;
   });
 })
+};
+
+exports.insertComment = (id, body)=> {
+  
+  return checkreviewID(id).then(()=>{
+    return checkUser(body.author).then(()=>{
+    let queryStr =
+    "INSERT INTO comments (author,body,review_id) VALUES ($1,$2,$3) RETURNING *;";
+    const review_id = id
+  const queryVals = [
+    body.author,
+    body.body, review_id]
+    if (queryVals.includes(undefined)) {
+      return Promise.reject({ status: 400, msg: "Insufficient data" });
+    }
+    return db.query(queryStr, queryVals)
+.then((result) => { 
+    return result.rows;
+   
+  });
+})
+  })
 };

@@ -164,3 +164,62 @@ describe("/api/reviews/:review_id/comments", () => {
   
       });
  })
+
+ describe("POST /api/reviews/:review_id/comments", () => {
+ test("POST 201: adding new comment to ID", () => {
+  const comment = {
+    author: 'bainesface',
+    body: 'I really loved this game too!'
+  };
+  return request(app)
+    .post("/api/reviews/2/comments")
+    .send(comment)
+    .expect(201)
+    .then(({ body }) => {
+      
+      expect(body.comment[0].author).toBe('bainesface');
+      expect(body.comment[0].body).toBe('I really loved this game too!');
+      expect(body.comment[0]).toMatchObject({
+        author: expect.any(String),
+        body: expect.any(String),
+        created_at: expect.any(String),
+        review_id: expect.any(Number),
+        votes: expect.any(Number),
+        comment_id: expect.any(Number)
+    });
+  })
+})
+test("GET 404: error when id does not exist", () => {
+  return request(app)
+    .post("/api/reviews/1900888/comments")
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toBe("no reviewer matching that id");
+    });
+  })
+  test("POST 400: failed to create comment as not enough data", () => {
+    const comment = {
+      author: 'bainesface'
+    };
+    return request(app)
+    .post("/api/reviews/2/comments")
+    .send(comment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Insufficient data");
+      });
+  });
+test("POST 404: failed to create comment as user doesnt exist", () => {
+  const comment = {
+    author: 'bainesface1',
+    body: 'I really loved this game too!'
+  };
+  return request(app)
+  .post("/api/reviews/2/comments")
+  .send(comment)
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toEqual("no user matching that username");
+    });
+});
+})
