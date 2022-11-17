@@ -32,12 +32,13 @@ exports.selectReview = (id)=> {
   return checkreviewID(id).then(()=>{
   return db
   .query(
-    `SELECT review_id, title,review_body,designer,review_img_url, votes, created_at, categories.slug AS category, users.username AS owner
+    `SELECT owner,review_body, title, reviews.review_id, category, review_img_url, reviews.created_at, reviews.votes, designer, COUNT(comments.review_id)::int AS comment_count 
     FROM reviews 
-    JOIN Categories ON categories.slug = reviews.category
-    JOIN users ON users.username = reviews.owner
-    WHERE review_id =$1;
-    `, [id]
+    JOIN users ON users.username = reviews.owner LEFT JOIN comments ON comments.review_id = reviews.review_id 
+    JOIN Categories ON categories.slug = reviews.category 
+    WHERE reviews.review_id = $1 
+    GROUP BY reviews.review_id ORDER BY created_at DESC
+    ;`, [id]
   )
   .then((result) => {
     if(result.rows.length ===0){
