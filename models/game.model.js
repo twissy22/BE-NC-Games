@@ -102,3 +102,13 @@ exports.updateVotes = (id, body)=> {
   });
 })
 };
+exports.selectUsers = ()=> {
+  return db
+  .query(
+    `SELECT name, username, avatar_url
+    FROM users;`
+  )
+  .then((result) => {
+    return result.rows;
+  });
+};

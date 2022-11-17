@@ -313,3 +313,28 @@ test("POST 400: failed to update vote as no vote sent", () => {
       expect(body.msg).toEqual("Insufficient data");
     });
 });
+describe("/api/users", () => {
+  test("GET 200: gets an array of user objects", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.users.length).toBeGreaterThan(0);
+        body.users.forEach((user) => {
+          expect(user).toMatchObject({
+              name: expect.any(String),
+              username: expect.any(String),
+              avatar_url: expect.any(String)
+          });
+        });
+      });
+  })
+  test("GET 404: when users not correctly entered", ()=> {
+      return request(app)
+        .get("/api/use")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("path not found");
+    })
+  })
+})
