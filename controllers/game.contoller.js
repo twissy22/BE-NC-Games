@@ -10,7 +10,9 @@ exports.getCategories = (req, res, next) => {
       });
 }
 exports.getReviews = (req, res, next) => {
-    selectReviews()
+  const { sort_by, order, category} = req.query;
+  console.log(category)
+    selectReviews(sort_by, order, category)
     .then((reviews) => {
 
         res.status(200).send({ reviews });
