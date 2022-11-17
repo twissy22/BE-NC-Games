@@ -84,7 +84,6 @@ exports.insertComment = (id, body)=> {
 };
 
 exports.updateVotes = (id, body)=> {
-  if(isNaN(id)){return Promise.reject({ status: 400, msg: "incorrect data type for id" });}
   return checkreviewID(id).then(()=>{
     let queryStr =
     "UPDATE reviews SET votes = votes + $1 WHERE review_id = $2  RETURNING *;";

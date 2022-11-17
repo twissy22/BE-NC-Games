@@ -23,6 +23,7 @@ exports.formatComments = (comments, idLookup) => {
 	});
 };
 exports.checkreviewID = (id)=>{
+	if(isNaN(id)){return Promise.reject({ status: 400, msg: "incorrect data type for id" });}
 return db
 .query(
 	'SELECT * FROM reviews WHERE review_id = $1;',[id]

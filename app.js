@@ -12,13 +12,14 @@ app.get("/api/reviews/:id/comments",getCommentsById)
 app.post("/api/reviews/:id/comments", postComment)
 app.patch("/api/reviews/:review_id", patchVotes)
 app.use((err, req, res, next) => {
+  console.log(err)
   if (err.code === "22P02") res.status(400).send({ msg: "bad request!" });
   else {
     next(err);
   }
 });
 app.use((err, req, res, next) => {
-  // console.log(err)
+console.log(err)
   res.status(err.status).send({ msg: err.msg });
 });
 

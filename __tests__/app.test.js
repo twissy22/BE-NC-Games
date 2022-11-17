@@ -150,7 +150,7 @@ describe("/api/reviews/:review_id/comments", () => {
       .get("/api/reviews/daag/comments")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("bad request!");
+        expect(body.msg).toBe("incorrect data type for id");
       });
   
       });
