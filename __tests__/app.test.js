@@ -82,7 +82,6 @@ describe("/api/reviews/:id", () => {
       .get("/api/reviews/2")
       .expect(200)
       .then(({ body }) => {
-        console.log(body)
         expect(body.reviews.length).toBe(1)
         expect(body.reviews[0].review_id).toBe(2)
         expect(body.reviews[0].comment_count).toBe(3)
