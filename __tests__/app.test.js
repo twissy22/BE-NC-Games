@@ -277,7 +277,7 @@ test("PATCH 400: when wrong data", () => {
       expect(body.msg).toEqual("bad request!");
 });
  })
-test("PATCH 404: error when id does not exist", () => {
+test(" 404: error when id does not exist", () => {
   const vote = {inc_vote: -10
   };
   return request(app)
@@ -289,4 +289,27 @@ test("PATCH 404: error when id does not exist", () => {
     });
 
     });
+    test("PATCH 400: wrong data for id", () => {
+      const vote = {inc_vote: -10
+      };
+      return request(app)
+        .patch("/api/reviews/daag")
+        .send(vote)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("incorrect data type for id");
+        });
+    
+        });
 })
+test("POST 400: failed to update vote as no vote sent", () => {
+  const vote = {
+  };
+  return request(app)
+  .patch("/api/reviews/2")
+  .send(vote)
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toEqual("Insufficient data");
+    });
+});
