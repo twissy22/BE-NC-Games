@@ -79,11 +79,12 @@ describe("/api/reviews", () => {
 describe("/api/reviews/:id", () => {
   test("GET 200: gets an array of review object", () => {
     return request(app)
-      .get("/api/reviews/1")
+      .get("/api/reviews/2")
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews.length).toBe(1)
-        expect(body.reviews[0].review_id).toBe(1)
+        expect(body.reviews[0].review_id).toBe(2)
+        expect(body.reviews[0].comment_count).toBe(3)
           expect(body.reviews[0]).toMatchObject({
             review_id: expect.any(Number),
             title: expect.any(String),
@@ -92,7 +93,8 @@ describe("/api/reviews/:id", () => {
             review_body: expect.any(String),
             votes: expect.any(Number),
             designer: expect.any(String),
-            owner: expect.any(String)
+            owner: expect.any(String),
+            comment_count: expect.any(Number)
           });
       });
     });
