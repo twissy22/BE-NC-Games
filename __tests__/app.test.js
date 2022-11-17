@@ -18,7 +18,7 @@ describe("/api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then(({ body }) => {
-        expect(body.categories.length).toBeGreaterThan(0);
+        expect(body.categories.length).toBe(4);
         body.categories.forEach((category) => {
           expect(category).toMatchObject({
             description: expect.any(String),
