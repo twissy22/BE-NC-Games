@@ -29,6 +29,7 @@ exports.selectReviews = ()=> {
     });
 };
 exports.selectReview = (id)=> {
+  return checkreviewID(id).then(()=>{
   return db
   .query(
     `SELECT review_id, title,review_body,designer,review_img_url, votes, created_at, categories.slug AS category, users.username AS owner
@@ -44,6 +45,7 @@ exports.selectReview = (id)=> {
     }
     return result.rows;
   });
+})
 };
 
 exports.selectComments = (id)=> {
@@ -81,4 +83,22 @@ exports.insertComment = (id, body)=> {
   });
 })
   })
+};
+
+exports.updateVotes = (id, body)=> {
+  return checkreviewID(id).then(()=>{
+    let queryStr =
+    "UPDATE reviews SET votes = votes + $1 WHERE review_id = $2  RETURNING *;";
+    const review_id = id
+  const queryVals = [
+    body.inc_vote, review_id]
+    if (queryVals.includes(undefined)) {
+      return Promise.reject({ status: 400, msg: "Insufficient data" });
+    }
+    return db.query(queryStr, queryVals)
+.then((result) => { 
+    return result.rows;
+   
+  });
+})
 };

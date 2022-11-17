@@ -111,7 +111,7 @@ describe("/api/reviews/:id", () => {
         .get("/api/reviews/daag")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("bad request!");
+          expect(body.msg).toBe("incorrect data type for id");
         });
     
         });
@@ -150,7 +150,7 @@ describe("/api/reviews/:review_id/comments", () => {
       .get("/api/reviews/daag/comments")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("bad request!");
+        expect(body.msg).toBe("incorrect data type for id");
       });
   
       });
@@ -159,7 +159,7 @@ describe("/api/reviews/:review_id/comments", () => {
       .get("/api/reviews/1900888/comments")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("no reviewer matching that id");
+        expect(body.msg).toBe("no review matching that id");
       });
   
       });
@@ -194,7 +194,7 @@ test("GET 404: error when id does not exist", () => {
     .post("/api/reviews/1900888/comments")
     .expect(404)
     .then(({ body }) => {
-      expect(body.msg).toBe("no reviewer matching that id");
+      expect(body.msg).toBe("no review matching that id");
     });
   })
   test("POST 400: failed to create comment as not enough data", () => {
@@ -223,3 +223,93 @@ test("POST 404: failed to create comment as user doesnt exist", () => {
     });
 });
 })
+describe("PATCH /api/reviews/:review_id", () => {
+  test("PATCH 200: increment vote", () => {
+   const vote = {inc_vote: 5
+   };
+   return request(app)
+   .patch("/api/reviews/2")
+   .send(vote)
+   .expect(200)
+   .then(({ body }) => {
+    expect(body.review[0].votes).toBe(10);
+    expect(body.review[0]).toMatchObject({
+      review_id: expect.any(Number),
+      title: expect.any(String),
+      review_img_url: expect.any(String),
+      created_at: expect.any(String),
+      review_body: expect.any(String),
+      votes: expect.any(Number),
+      designer: expect.any(String),
+      owner: expect.any(String)
+});
+  })
+})
+test("PATCH 200: decrement vote", () => {
+  const vote = {inc_vote: -10
+  };
+  return request(app)
+  .patch("/api/reviews/2")
+  .send(vote)
+  .expect(200)
+  .then(({ body }) => {
+   expect(body.review[0].votes).toBe(-5);
+   expect(body.review[0]).toMatchObject({
+     review_id: expect.any(Number),
+     title: expect.any(String),
+     review_img_url: expect.any(String),
+     created_at: expect.any(String),
+     review_body: expect.any(String),
+     votes: expect.any(Number),
+     designer: expect.any(String),
+     owner: expect.any(String)
+});
+ })
+})
+test("PATCH 400: when wrong data", () => {
+  const vote = {inc_vote: "adam"
+  };
+  return request(app)
+  .patch("/api/reviews/2")
+  .send(vote)
+  .expect(400)
+  .then(({ body }) => {
+      expect(body.msg).toEqual("bad request!");
+});
+ })
+test(" 404: error when id does not exist", () => {
+  const vote = {inc_vote: -10
+  };
+  return request(app)
+    .patch("/api/reviews/1900888")
+    .send(vote)
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toBe("no review matching that id");
+    });
+
+    });
+    test("PATCH 400: wrong data for id", () => {
+      const vote = {inc_vote: -10
+      };
+      return request(app)
+        .patch("/api/reviews/daag")
+        .send(vote)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("incorrect data type for id");
+        });
+    
+        });
+})
+test("POST 400: failed to update vote as no vote sent", () => {
+  const vote = {
+  };
+  return request(app)
+  .patch("/api/reviews/2")
+  .send(vote)
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toEqual("Insufficient data");
+    });
+});

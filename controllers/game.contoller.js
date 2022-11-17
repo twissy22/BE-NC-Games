@@ -1,4 +1,4 @@
-const { selectCategories, selectReviews, selectReview, selectComments, insertComment } = require("../models/game.model");
+const { selectCategories, selectReviews, selectReview, selectComments, insertComment, updateVotes } = require("../models/game.model");
 
 exports.getCategories = (req, res, next) => {
     selectCategories()
@@ -53,3 +53,15 @@ exports.getReviewById = (req, res, next) => {
           next(err);
         });
       }
+    
+      exports.patchVotes= (req, res, next) => {
+        const {review_id} = req.params
+        updateVotes(review_id,req.body)
+        .then((review) => {
+        
+            res.status(200).send({ review });
+          })
+          .catch((err) => {
+            next(err);
+          });
+        }
