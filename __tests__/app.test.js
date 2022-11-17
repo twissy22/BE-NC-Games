@@ -111,7 +111,7 @@ describe("/api/reviews/:id", () => {
         .get("/api/reviews/daag")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("bad request!");
+          expect(body.msg).toBe("incorrect data type for id");
         });
     
         });

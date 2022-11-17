@@ -29,6 +29,7 @@ exports.selectReviews = ()=> {
     });
 };
 exports.selectReview = (id)=> {
+  return checkreviewID(id).then(()=>{
   return db
   .query(
     `SELECT review_id, title,review_body,designer,review_img_url, votes, created_at, categories.slug AS category, users.username AS owner
@@ -44,6 +45,7 @@ exports.selectReview = (id)=> {
     }
     return result.rows;
   });
+})
 };
 
 exports.selectComments = (id)=> {
