@@ -403,3 +403,26 @@ describe("/api/users", () => {
       });
   });
 });
+describe("DELETE /api/comments/:comment_id", () => {
+  test("DELETE 204: and removes comment with given ID from database", () => {
+    return request(app)
+    .delete("/api/comments/1")
+    .expect(204);
+  });
+  test("DELETE - 400: Invalid ID (wrong data type)", () => {
+    return request(app)
+      .delete("/api/comments/four")
+      .expect(400)
+      .then((res) => {
+        expect(res.body.msg).toBe("bad request!");
+      });
+  });
+  test("DELETE - 400: Invalid ID (wrong data type)", () => {
+    return request(app)
+      .delete("/api/comments/1001901")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("no comment matching given id");
+      });
+  });
+})

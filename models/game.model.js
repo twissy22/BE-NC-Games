@@ -3,6 +3,7 @@ const {
   checkreviewID,
   checkUser,
   checkCategory,
+  checkCommentId
 } = require("../db/seeds/utils");
 
 exports.selectCategories = () => {
@@ -142,4 +143,15 @@ exports.selectUsers = () => {
     .then((result) => {
       return result.rows;
     });
+};
+exports.removeComment = (id) => {
+  return checkCommentId(id).then(() => {
+      const queryStr =
+        "DELETE FROM comments WHERE comment_id = $1 RETURNING *;";
+
+      return db.query(queryStr, [id]).then((result) => { 
+        return result.rows;
+      });
+    });
+  
 };
