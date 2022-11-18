@@ -1,6 +1,6 @@
 const app = require("./app.js");
 
-const {PORT = 9090gti } = process.env
+const {PORT = 9090 } = process.env
 
 app.listen(PORT, (err) => {
   if (err) console.log(err);
