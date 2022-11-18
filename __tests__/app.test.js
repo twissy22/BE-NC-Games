@@ -422,7 +422,6 @@ describe("DELETE /api/comments/:comment_id", () => {
       .delete("/api/comments/1001901")
       .expect(404)
       .then((res) => {
-        console.log(res);
         expect(res.body.msg).toBe("no comment matching given id");
       });
   });

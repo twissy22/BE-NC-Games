@@ -149,7 +149,7 @@ exports.removeComment = (id) => {
       let queryStr =
         "DELETE FROM comments WHERE comment_id = $1 RETURNING *;";
 
-      return db.query(queryStr, [id]).then((result) => { console.log(result)
+      return db.query(queryStr, [id]).then((result) => { 
         return result.rows;
       });
     });
