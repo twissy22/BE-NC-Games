@@ -72,6 +72,14 @@
   "POST /api/reviews/:id/comments": {
     "description": "posts a comment and returns the posted comment",
     "queries": [],
+    "exampleRequestBody": {
+      "review": [
+        {
+        "author": "bainesface",
+        "body": "I really loved this game too!"
+      }
+      ]
+    },
     "exampleResponse": {
       "review": [
         {
@@ -88,6 +96,13 @@
   "PATCH /api/reviews/:review_id": {
     "description": "patch votes for a review by incrementing or decrementing and returns updated review",
     "queries": [],
+    "exampleRequestBody": {
+      "review": [
+        { 
+          "inc_vote": 5 
+      }
+      ]
+    },
     "exampleResponse": {
       "review": [
         {
