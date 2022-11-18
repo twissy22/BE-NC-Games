@@ -13,7 +13,7 @@ app.post("/api/reviews/:id/comments", postComment)
 app.patch("/api/reviews/:review_id", patchVotes)
 app.get("/api/users",getUsers)
 app.use((err, req, res, next) => {
-  // console.log(err)
+ 
   if (err.code === "22P02") res.status(400).send({ msg: "bad request!" });
   else {
     next(err);
