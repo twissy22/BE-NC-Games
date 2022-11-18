@@ -146,7 +146,7 @@ exports.selectUsers = () => {
 };
 exports.removeComment = (id) => {
   return checkCommentId(id).then(() => {
-      let queryStr =
+      const queryStr =
         "DELETE FROM comments WHERE comment_id = $1 RETURNING *;";
 
       return db.query(queryStr, [id]).then((result) => { 
