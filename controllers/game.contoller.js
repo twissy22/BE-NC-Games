@@ -1,4 +1,4 @@
-const { selectCategories, selectReviews, selectReview, selectComments, insertComment, updateVotes, selectUsers, removeComment } = require("../models/game.model");
+const { selectCategories, selectReviews, selectReview, selectComments, insertComment, updateVotes, selectUsers, removeComment, selectApi } = require("../models/game.model");
 
 exports.getCategories = (req, res, next) => {
     selectCategories()
@@ -87,3 +87,12 @@ exports.getReviewById = (req, res, next) => {
             next(err);
           });
     }
+    exports.getApi = (req, res, next) => {
+      selectApi()
+      .then((data) => {
+          res.status(200).send({data});
+        })
+        .catch((err) => {
+          next(err);
+        });
+  }

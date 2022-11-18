@@ -3,6 +3,7 @@ const app = require("../app.js");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data");
 const db = require("../db/connection");
+const endpoints = require("../endpoints.json")
 
 beforeEach(() => {
   return seed(testData);
@@ -42,7 +43,7 @@ describe("/api/reviews", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.reviews.length).toBeGreaterThan(0);
         body.reviews.forEach((review) => {
           expect(review).toMatchObject({
@@ -157,7 +158,7 @@ describe("/api/reviews/:id", () => {
     return request(app)
       .get("/api/reviews/2")
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.reviews.length).toBe(1);
         expect(body.reviews[0].review_id).toBe(2);
         expect(body.reviews[0].comment_count).toBe(3);
@@ -198,7 +199,7 @@ describe("/api/reviews/:review_id/comments", () => {
     return request(app)
       .get("/api/reviews/2/comments")
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.comments.length).toBeGreaterThan(0);
         expect(body.comments).toBeSortedBy("created_at", { descending: true });
         body.comments.forEach((comment, index) => {
@@ -240,7 +241,7 @@ describe("/api/reviews/:review_id/comments", () => {
 });
 
 describe("POST /api/reviews/:review_id/comments", () => {
-  test("POST 201: adding new comment to ID", () => {
+  test("POST 201: adding new comment to ID", () => { 
     const comment = {
       author: "bainesface",
       body: "I really loved this game too!",
@@ -249,7 +250,7 @@ describe("POST /api/reviews/:review_id/comments", () => {
       .post("/api/reviews/2/comments")
       .send(comment)
       .expect(201)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.comment[0].author).toBe("bainesface");
         expect(body.comment[0].body).toBe("I really loved this game too!");
         expect(body.comment[0]).toMatchObject({
@@ -303,7 +304,7 @@ describe("PATCH /api/reviews/:review_id", () => {
       .patch("/api/reviews/2")
       .send(vote)
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.review[0].votes).toBe(10);
         expect(body.review[0]).toMatchObject({
           review_id: expect.any(Number),
@@ -383,7 +384,7 @@ describe("/api/users", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.users.length).toBeGreaterThan(0);
         body.users.forEach((user) => {
           expect(user).toMatchObject({
@@ -426,3 +427,23 @@ describe("DELETE /api/comments/:comment_id", () => {
       });
   });
 })
+describe("/api", () => {
+  test("GET 200: gets endpoints json file", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({body}) => { 
+        const output = endpoints
+        expect(body.data).toEqual(output)
+      })
+    })
+    test("GET 404: when api not correctly entered", () => {
+      return request(app)
+        .get("/ap")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("path not found");
+        });
+    });
+  });
+  
