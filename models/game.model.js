@@ -5,6 +5,7 @@ const {
   checkCategory,
   checkCommentId
 } = require("../db/seeds/utils");
+const { readFile } = require("fs/promises");
 
 exports.selectCategories = () => {
   return db
@@ -155,3 +156,9 @@ exports.removeComment = (id) => {
     });
   
 };
+exports.selectApi = ()=> {
+  return readFile("endpoints.json",'utf8').then((data)=>{ 
+    const parsedData = JSON.parse(data);
+    return parsedData;
+  })
+}

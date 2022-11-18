@@ -42,7 +42,7 @@ describe("/api/reviews", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.reviews.length).toBeGreaterThan(0);
         body.reviews.forEach((review) => {
           expect(review).toMatchObject({
@@ -157,7 +157,7 @@ describe("/api/reviews/:id", () => {
     return request(app)
       .get("/api/reviews/2")
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.reviews.length).toBe(1);
         expect(body.reviews[0].review_id).toBe(2);
         expect(body.reviews[0].comment_count).toBe(3);
@@ -198,7 +198,7 @@ describe("/api/reviews/:review_id/comments", () => {
     return request(app)
       .get("/api/reviews/2/comments")
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.comments.length).toBeGreaterThan(0);
         expect(body.comments).toBeSortedBy("created_at", { descending: true });
         body.comments.forEach((comment, index) => {
@@ -240,7 +240,7 @@ describe("/api/reviews/:review_id/comments", () => {
 });
 
 describe("POST /api/reviews/:review_id/comments", () => {
-  test("POST 201: adding new comment to ID", () => {
+  test("POST 201: adding new comment to ID", () => { 
     const comment = {
       author: "bainesface",
       body: "I really loved this game too!",
@@ -249,7 +249,7 @@ describe("POST /api/reviews/:review_id/comments", () => {
       .post("/api/reviews/2/comments")
       .send(comment)
       .expect(201)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.comment[0].author).toBe("bainesface");
         expect(body.comment[0].body).toBe("I really loved this game too!");
         expect(body.comment[0]).toMatchObject({
@@ -303,7 +303,7 @@ describe("PATCH /api/reviews/:review_id", () => {
       .patch("/api/reviews/2")
       .send(vote)
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.review[0].votes).toBe(10);
         expect(body.review[0]).toMatchObject({
           review_id: expect.any(Number),
@@ -383,7 +383,7 @@ describe("/api/users", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
-      .then(({ body }) => {
+      .then(({ body }) => { 
         expect(body.users.length).toBeGreaterThan(0);
         body.users.forEach((user) => {
           expect(user).toMatchObject({
@@ -426,3 +426,151 @@ describe("DELETE /api/comments/:comment_id", () => {
       });
   });
 })
+describe("/api", () => {
+  test("GET 200: gets endpoints json file", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({body}) => { 
+        const output = {
+          "GET /api": {
+            "description": "serves up a json representation of all the available endpoints of the api"
+          },
+          "GET /api/categories": {
+            "description": "serves an array of all categories",
+            "queries": [],
+            "exampleResponse": {
+              "categories": [
+                {
+                  "description": "Players attempt to uncover each other's hidden role",
+                  "slug": "Social deduction"
+                }
+              ]
+            }
+          },
+          "GET /api/reviews": {
+            "description": "serves an array of all reviews",
+            "queries": ["category", "sort_by", "order"],
+            "exampleResponse": {
+              "reviews": [
+                {
+                  "title": "One Night Ultimate Werewolf",
+                  "designer": "Akihisa Okui",
+                  "owner": "happyamy2016",
+                  "review_img_url": "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+                  "category": "hidden-roles",
+                  "created_at": 1610964101251,
+                  "review_id": 1,
+                  "votes": 5,
+                  "comment_count": 1
+                }
+              ]
+            }
+          },
+          "GET /api/reviews/:id": {
+            "description": "serves an array of all reviews by id",
+            "queries": [],
+            "exampleResponse": {
+              "review": [
+                {
+                  "owner": "philippaclaire9",
+                  "review_body": "Fiddly fun for all the family",
+                  "title": "Jenga",
+                  "review_id": 2,
+                  "category": "dexterity",
+                  "review_img_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                  "created_at": "2021-01-18T10:01:41.251Z",
+                  "votes": 5,
+                  "designer": "Leslie Scott",
+                  "comment_count": 3
+                }
+              ]
+            }
+          },
+          "GET /api/reviews/:id/comments:": {
+            "description": "serves an array of comments from a review_id",
+            "queries": [],
+            "exampleResponse": {
+              "review": [
+                {
+                  "comment_id": 5,
+                  "votes": 13,
+                  "created_at": "2021-01-18T10:24:05.410Z",
+                  "body": "Now this is a story all about how, board games turned my life upside down",
+                  "review_id": 2,
+                  "author": "mallionaire"
+                }
+              ]
+            }
+          },
+          "POST /api/reviews/:id/comments": {
+            "description": "posts a comment and returns the posted comment",
+            "queries": [],
+            "exampleResponse": {
+              "review": [
+                {
+                  "comment_id": 7,
+                  "body": "I really loved this game too!",
+                  "review_id": 2,
+                  "author": "bainesface",
+                  "votes": 0,
+                  "created_at": "2022-11-18T11:57:37.390Z"
+                }
+              ]
+            }
+          },
+          "PATCH /api/reviews/:review_id": {
+            "description": "patch votes for a review by incrementing or decrementing and returns updated review",
+            "queries": [],
+            "exampleResponse": {
+              "review": [
+                {
+                  "review_id": 2,
+                  "title": "Jenga",
+                  "category": "dexterity",
+                  "designer": "Leslie Scott",
+                  "owner": "philippaclaire9",
+                  "review_body": "Fiddly fun for all the family",
+                  "review_img_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                  "created_at": "2021-01-18T10:01:41.251Z",
+                  "votes": 10
+                }
+              ]
+            }
+        },
+        "GET /api/users": {
+          "description": "serves an array of all users",
+          "queries": [],
+          "exampleResponse": {
+            "categories": [
+              {
+                "name": "dave",
+                "username": "dav3rid",
+                "avatar_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+              }
+            ]
+          }
+        },
+        "DELETE /api/comments/:comment_id": {
+          "description": "deletes a user with given id",
+          "queries": [],
+          "exampleResponse": {
+            "categories": [
+              
+            ]
+          }
+        }
+        }
+        expect(body.data).toEqual(output)
+      })
+    })
+    test("GET 404: when api not correctly entered", () => {
+      return request(app)
+        .get("/ap")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("path not found");
+        });
+    });
+  });
+  
