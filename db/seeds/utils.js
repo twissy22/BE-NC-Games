@@ -45,3 +45,14 @@ exports.checkUser = (user)=>{
 		   }
 	})	
 }
+exports.checkCategory = (category)=>{
+	return db
+	.query(
+		'SELECT * FROM categories WHERE slug= $1;',[category]
+	)
+	.then((result)=>{ console.log(result.rows,"hi")
+		if(result.rows.length ===0){
+			return Promise.reject({status: 404, msg: "no category matching entered category"})
+		   }
+	})	
+}

@@ -59,12 +59,19 @@ describe("/api/reviews", () => {
         });
       });
   });
+  test("GET 200: gets an array of review objects sorted created_at desc by default", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toBeSortedBy("created_at", { descending: true });
+      });
+  });
   test("GET 200: gets an array of review objects by category", () => {
     return request(app)
       .get("/api/reviews?category=dexterity")
       .expect(200)
       .then(({ body }) => {
-        console.log(body.reviews);
         expect(body.reviews.length).toBeGreaterThan(0);
         body.reviews.forEach((review) => {
           expect(review.category).toBe("dexterity");
@@ -82,6 +89,23 @@ describe("/api/reviews", () => {
         });
       });
   });
+  test("GET 404: gets an error when category doesnt exist", () => {
+    return request(app)
+      .get("/api/reviews?category=dexterit")
+      .expect(404)
+      .then(({ body }) => { 
+        expect(body.msg).toBe("no category matching entered category");
+      })
+    })
+
+  test("GET 200: gets an array of review objects by category", () => {
+    return request(app)
+      .get("/api/reviews?category=children's games")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews.length).toBe(0)
+        })
+      })
 
   test("GET 200: gets an array of review objects sorted by votes", () => {
     return request(app)
@@ -119,14 +143,6 @@ describe("/api/reviews", () => {
       });
   });
 
-  test("GET 200: gets an array of review objects sorted desc", () => {
-    return request(app)
-      .get("/api/reviews")
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.reviews).toBeSortedBy("created_at", { descending: true });
-      });
-  });
   test("GET 404: when reviews not correctly entered", () => {
     return request(app)
       .get("/api/reveisw")
