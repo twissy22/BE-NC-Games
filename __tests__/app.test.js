@@ -403,7 +403,7 @@ describe("/api/users", () => {
       });
   });
 });
-describe.only("DELETE /api/comments/:comment_id", () => {
+describe("DELETE /api/comments/:comment_id", () => {
   test("DELETE 204: and removes comment with given ID from database", () => {
     return request(app)
     .delete("/api/comments/1")
