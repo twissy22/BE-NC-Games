@@ -90,7 +90,6 @@ exports.getReviewById = (req, res, next) => {
     exports.getApi = (req, res, next) => {
       selectApi()
       .then((data) => {
-        console.log(data)
           res.status(200).send({data});
         })
         .catch((err) => {
