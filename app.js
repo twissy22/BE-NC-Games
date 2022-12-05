@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 
 const { getCategories, getReviews, getReviewById, getCommentsById, postComment, patchVotes, getUsers, deleteComment, getApi} = require("./controllers/game.contoller.js")
-
+app.use(cors());
 app.use(express.json());
 
 app.get("/api/categories", getCategories);
