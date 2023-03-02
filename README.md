@@ -2,7 +2,7 @@ link to hosted version - https://magnificent-hospital-gown-duck.cyclic.app/api
 
 This project is a set of api endpoints for a SQL database relating to board game reviews with tables for reviews, users, comments and categories. These endpoints can get various information from the database and can also post, patch and delete. For a full list of endpoints please see the endpoints.json file. 
 
-To clone the project click Code on github and them copy the url from HTTPS and write the command git clone <"copied url">
+To clone the project click Code on github and them copy the url from HTTPS and write the command git clone <"copied url">, , you will need to npm install to install dependencies. 
 
 You will need to create two .env files for your project: .env.test and .env.development. Into each, add PGDATABASE=<database_name_here>, with the correct database name for that environment (see /db/setup.sql for the database names). Double check that these .env files are .gitignored.
 
